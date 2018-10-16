@@ -5,9 +5,11 @@ MY_MOUNT_DIR="/mnt"
 for MY_PARTITION in `fdisk -l | grep -v swap | egrep -o /dev/sd.[0-9]+` ; do
     mount | grep -q "^$MY_PARTITION"
     if [ $? -eq 1 ] ; then
+          echo "Partition: ${MY_PARTITION}"
           blkid $MY_PARTITION
           if [ $? -eq 0 ] ; then
               MOUNTPOINT=$MY_MOUNT_DIR/`echo $MY_PARTITION | egrep -o sd.[0-9]+`
+              echo "Mount point: ${MOUNTPOINT}"
               mkdir -p $MOUNTPOINT
               mount $MY_PARTITION $MOUNTPOINT
           fi
